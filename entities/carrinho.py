@@ -30,7 +30,6 @@ class Carrinho:
         for item in self.itens:
             produto = item['produto']
             quantidade = item['quantidade']
-            produto.remover_estoque(quantidade)
 
         print("\nCompra finalizada com sucesso! Estoque atualizado.")
         self.itens.clear()
