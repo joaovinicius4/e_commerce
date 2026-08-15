@@ -27,12 +27,8 @@ class Carrinho:
         return total
 
     def finalizar_compra(self) -> None:
-        for item in self.itens:
-            produto = item['produto']
-            quantidade = item['quantidade']
-
-        print("\nCompra finalizada com sucesso! Estoque atualizado.")
         self.itens.clear()
+        print("\nCarrinho esvaziado com sucesso.")
 
     def listar(self):
         print("Carrinho de Compras: ")
