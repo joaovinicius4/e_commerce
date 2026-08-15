@@ -1,13 +1,15 @@
 from datetime import datetime
+from cliente import Cliente
 from entities import Carrinho
 
 class Pedido:
-    def __init__(self, carrinho: Carrinho, id_pedido: int):
+    def __init__(self, carrinho: Carrinho, id_pedido: int, cliente: Cliente):
         self.id_pedido = id_pedido
         self.itens = list(carrinho.itens)
         self.valor_total = carrinho.calcular_total()
         self.data_pedido = datetime.now()
         self.status = "PENDENTE"
+        self.cliente = cliente
 
     def confirmar_pedido(self):
         if self.status != "PENDENTE":
