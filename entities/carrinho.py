@@ -1,6 +1,3 @@
-from entities.produto import Produto
-
-
 class Carrinho:
     def __init__(self):
         self.itens = []

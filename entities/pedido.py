@@ -1,6 +1,4 @@
 from datetime import datetime
-from cliente import Cliente
-from entities import Carrinho
 
 class Pedido:
     def __init__(self, carrinho: Carrinho, id_pedido: int, cliente: Cliente):
