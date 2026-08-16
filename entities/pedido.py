@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from entities.item_pedido import ItemPedido
 from database import Base
+from services.carrinho import Carrinho
 
 class Pedido(Base):
     __tablename__ = 'pedidos'
