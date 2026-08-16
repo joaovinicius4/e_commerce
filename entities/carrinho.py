@@ -5,18 +5,31 @@ class Carrinho:
     def adicionar_produto(self, produto: Produto, quantidade: int) -> None:
         if quantidade <= 0:
             raise ValueError("A quantidade deve ser maior que zero")
+            
+        for item in self.itens:
+            if item['produto'] == produto:
+                nova_qtd = item['quantidade'] + quantidade
+                if nova_qtd > produto.estoque:
+                    raise ValueError(
+                        f"Estoque indisponível para o produto {produto.nome}. "
+                        f"Disponível: {produto.estoque}. Total solicitado: {nova_qtd}"
+                    )
+                item['quantidade'] = nova_qtd
+                print(f"Quantidade atualizada no carrinho: {produto.nome} (total: x{nova_qtd})")
+                return
+
         if quantidade > produto.estoque:
             raise ValueError(
-                f"estoque indisponivel para o produto {produto.nome}."
+                f"Estoque indisponível para o produto {produto.nome}."
                 f"Quantidade disponivel: {produto.estoque}. Solicitado: {quantidade}"
             )
         item = {
-            'produto':  produto,
-            "quantidade":  quantidade
+            'produto': produto,
+            'quantidade': quantidade
         }
         self.itens.append(item)
         print(f"Adicionado ao carrinho: {produto.nome} (x{quantidade})")
-
+        
     def calcular_total(self) -> float:
         total = 0.0
         for item in self.itens:
