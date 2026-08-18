@@ -41,7 +41,6 @@ class Carrinho:
         print("\nCarrinho esvaziado com sucesso.")
 
     def listar(self):
-        print("Carrinho de Compras: ")
         if not self.itens:
             print("O carrinho está vazio.")
             return

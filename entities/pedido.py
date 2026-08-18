@@ -29,7 +29,7 @@ class Pedido(Base):
             produto = item_carrinho['produto']
             quantidade = item_carrinho['quantidade'] 
             novo_item = ItemPedido(
-                produto_id=produto.id_produto,
+                produto=produto,
                 quantidade=quantidade,
                 preco_unitario=produto.preco
             )
