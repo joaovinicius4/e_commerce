@@ -3,6 +3,7 @@ from models.produto import Produto
 from models.cliente import Cliente
 from models.pedido import Pedido
 from services.carrinho import Carrinho
+from services.servico_pagamento import ServicoPagamento
 
 Base.metadata.create_all(bind=engine)
 
@@ -97,17 +98,36 @@ def main():
                     if not carrinho_atual.itens:
                         print("Carrinho esta vazio!")
                         continue
-                    else:
-                        try:
-                            novo_pedido = Pedido(carrinho_atual, cliente_atual)
-                            session.add(novo_pedido)
+                    try:
+                        novo_pedido = Pedido(carrinho_atual, cliente_atual)
+                        session.add(novo_pedido)
+                        session.commit()
+                        forma_pagamento = input("Forma de pagamento (pix/cartão): ").strip()
+                        dados_cartao = None
+
+                        if forma_pagamento.lower() == "cartão":
+                            numero = input("Número do cartão: ").strip()
+                            dados_cartao = {"numero": numero}
+
+                        servico_pagamento = ServicoPagamento(session)
+
+                        pagamento_aprovado = servico_pagamento.metodo_pagamento(
+                            novo_pedido,
+                            forma_pagamento,
+                            dados_cartao
+                        )
+
+                        if pagamento_aprovado:
                             novo_pedido.confirmar_pedido()
                             session.commit()
                             print(f"Pedido #{novo_pedido.id_pedido} gerado e salvo com sucesso!")
                             break
-                        except Exception as e:
-                            session.rollback()
-                            print(f"Erro ao finalizar pedido: {e}")
+                        else:
+                            print("Pedido não aprovado devido à recusa do pagamento.")
+
+                    except Exception as e:
+                        session.rollback()
+                        print(f"Erro ao finalizar pedido: {e}")
                 elif sub_opcao == '0':
                     print("Saindo do carrinho")
                     break
