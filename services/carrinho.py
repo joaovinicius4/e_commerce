@@ -1,3 +1,4 @@
+from models.produto import Produto
 class Carrinho:
     def __init__(self):
         self.itens = []
