@@ -116,8 +116,11 @@ def main():
             produtos = session.query(Produto).all()
             for p in produtos:
                 print(f"ID: {p.id_produto} | {p.nome} | R$ {p.preco:.2f} | Estoque: {p.estoque}")
-
-                
+        elif opcao == "0":
+            print("Saindo do sistema. Até logo!")
+            break
+        else:
+            print("Opção inválida, tente novamente.")
 
 if __name__ == "__main__":
     main()
