@@ -111,7 +111,12 @@ def main():
                 elif sub_opcao == '0':
                     print("Saindo do carrinho")
                     break
-       # elif opcao == '2':
+        elif opcao == '2':
+            print("PRODUTOS DISPONÍVEIS: ")
+            produtos = session.query(Produto).all()
+            for p in produtos:
+                print(f"ID: {p.id_produto} | {p.nome} | R$ {p.preco:.2f} | Estoque: {p.estoque}")
+
                 
 
 if __name__ == "__main__":
