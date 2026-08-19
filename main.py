@@ -4,6 +4,7 @@ from models.cliente import Cliente
 from models.pedido import Pedido
 from services.carrinho import Carrinho
 from services.servico_pagamento import ServicoPagamento
+from services.servico_pedido import PedidoService
 
 Base.metadata.create_all(bind=engine)
 
@@ -93,40 +94,31 @@ def main():
                     else:
                         print("Produto não encontrado!")
                 elif sub_opcao == '3':
-                    print (f"Carrinho no momento: {carrinho_atual.listar()}")
+                    carrinho_atual.listar()
                 elif sub_opcao == "4":
                     if not carrinho_atual.itens:
                         print("Carrinho esta vazio!")
                         continue
+
+                    forma_pagamento = input("Forma de pagamento (pix/cartao): ").strip()
+                    dados_cartao = None
+
+                    if forma_pagamento.lower() in ["cartao"]:
+                        numero = input("Número do cartão: ").strip()
+                        dados_cartao = {"token_cartao": numero, "numero": numero}
+
                     try:
-                        novo_pedido = Pedido(carrinho_atual, cliente_atual)
-                        session.add(novo_pedido)
-                        session.commit()
-                        forma_pagamento = input("Forma de pagamento (pix/cartão): ").strip()
-                        dados_cartao = None
-
-                        if forma_pagamento.lower() == "cartão":
-                            numero = input("Número do cartão: ").strip()
-                            dados_cartao = {"numero": numero}
-
-                        servico_pagamento = ServicoPagamento(session)
-
-                        pagamento_aprovado = servico_pagamento.metodo_pagamento(
-                            novo_pedido,
-                            forma_pagamento,
-                            dados_cartao
+                        servico_pedido = PedidoService(session)
+                        pedido_concluido = servico_pedido.finalizar_pedido(
+                            cliente=cliente_atual,
+                            carrinho=carrinho_atual,
+                            forma_pagamento=forma_pagamento,
+                            dados_pagamento=dados_cartao
                         )
-
-                        if pagamento_aprovado:
-                            novo_pedido.confirmar_pedido()
-                            session.commit()
-                            print(f"Pedido #{novo_pedido.id_pedido} gerado e salvo com sucesso!")
-                            break
-                        else:
-                            print("Pedido não aprovado devido à recusa do pagamento.")
-
+                        carrinho_atual.itens.clear()
+                        print(f" Pedido finalizado com sucesso!")
+                        break
                     except Exception as e:
-                        session.rollback()
                         print(f"Erro ao finalizar pedido: {e}")
                 elif sub_opcao == '0':
                     print("Saindo do carrinho")

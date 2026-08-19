@@ -3,29 +3,25 @@ from sqlalchemy import Column, Integer, Float, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from models.item_pedido import ItemPedido
 from database import Base
-from services.carrinho import Carrinho
 
 class Pedido(Base):
     __tablename__ = 'pedidos'
-
     id_pedido = Column(Integer, primary_key=True, autoincrement=True)
     valor_total = Column(Float, nullable=False)
     data_pedido = Column(DateTime, default=datetime.now)
-    status = Column(String(20), default="PENDENTE")
+    status = Column(String(30), default="PENDENTE") # PENDENTE, PAGO, CANCELADO, etc.
     
     cliente_id = Column(Integer, ForeignKey('clientes.id_cliente'), nullable=False)
     cliente = relationship("Cliente")
-    
     itens = relationship("ItemPedido", cascade="all, delete-orphan")
 
-    def __init__(self, carrinho, cliente):
+    def __init__(self, cliente, valor_total, itens_carrinho):
         self.cliente = cliente
-        self.valor_total = carrinho.calcular_total()
+        self.valor_total = valor_total
         self.data_pedido = datetime.now()
         self.status = "PENDENTE"
-        
         self.itens = []
-        for item_carrinho in carrinho.itens:
+        for item_carrinho in itens_carrinho:
             produto = item_carrinho['produto']
             quantidade = item_carrinho['quantidade'] 
             novo_item = ItemPedido(
@@ -35,17 +31,12 @@ class Pedido(Base):
             )
             self.itens.append(novo_item)
 
-    def confirmar_pedido(self):
-        if self.status != "PENDENTE":
-            print("Este pedido já foi processado anteriormente.")
-            return
+    def validar_e_baixar_estoque(self):
         for item in self.itens:
             produto = item.produto
             if item.quantidade > produto.estoque:
-                raise ValueError(f"Estoque insuficiente para {produto.nome} no momento da confirmação!")
-            produto.remover_estoque(item.quantidade)
-        self.status = "APROVADO"
-        print(f"Pedido #{self.id_pedido} confirmado com sucesso! Estoque debitado.")
+                raise ValueError(f"Estoque insuficiente para o produto: {produto.nome} (Disponível: {produto.estoque})")
+            produto.estoque -= item.quantidade
 
     def __str__(self) -> str:
         data_formatada = self.data_pedido.strftime('%d/%m/%Y %H:%M')
