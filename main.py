@@ -1,7 +1,7 @@
 from database import engine, Base, session
-from entities.produto import Produto
-from entities.cliente import Cliente
-from entities.pedido import Pedido
+from models.produto import Produto
+from models.cliente import Cliente
+from models.pedido import Pedido
 from services.carrinho import Carrinho
 
 Base.metadata.create_all(bind=engine)
