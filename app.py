@@ -19,6 +19,66 @@ st.markdown(
         .stApp { background: #f6f7fb; }
         [data-testid="stSidebar"] { background: #111827; }
         [data-testid="stSidebar"] * { color: #f9fafb; }
+        [data-testid="stSidebar"] input {
+            color: #f9fafb !important;
+            -webkit-text-fill-color: #f9fafb !important;
+            caret-color: #a5b4fc !important;
+            background-color: #211827 !important;
+        }
+        [data-testid="stSidebar"] [data-baseweb="input"] {
+            background-color: #211827 !important;
+            border-color: #4f46e5 !important;
+        }
+        [data-testid="stSidebar"] [data-baseweb="base-input"] {
+            background-color: #211827 !important;
+        }
+        [data-testid="stSidebar"] input::selection {
+            color: #ffffff !important;
+            background: #4f46e5 !important;
+        }
+        [data-testid="stSidebar"] [data-baseweb="input"] svg {
+            fill: #f9fafb !important;
+            color: #f9fafb !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] button svg {
+            fill: #f9fafb !important;
+            color: #f9fafb !important;
+        }
+        /* Mantém os controles escuros em todos os estados do BaseWeb. */
+        [data-testid="stSidebar"] [data-testid="stDateInput"] [data-baseweb="input"],
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] [data-baseweb="input"],
+        [data-testid="stSidebar"] [data-testid="stDateInput"] [data-baseweb="base-input"],
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] [data-baseweb="base-input"],
+        [data-testid="stSidebar"] [data-testid="stDateInput"] input,
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] input {
+            background: #211827 !important;
+            background-color: #211827 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            opacity: 1 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stDateInput"] [data-baseweb="input"],
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] [data-baseweb="input"] {
+            border: 1px solid #4f46e5 !important;
+            border-radius: 9px !important;
+            box-shadow: none !important;
+            overflow: hidden !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stDateInput"] [data-baseweb="input"]:focus-within,
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] [data-baseweb="input"]:focus-within {
+            border-color: #818cf8 !important;
+            box-shadow: 0 0 0 1px #818cf8 !important;
+        }
+        [data-testid="stSidebar"] [data-testid="stDateInput"] input:hover,
+        [data-testid="stSidebar"] [data-testid="stDateInput"] input:focus,
+        [data-testid="stSidebar"] [data-testid="stDateInput"] input:active,
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] input:hover,
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] input:focus,
+        [data-testid="stSidebar"] [data-testid="stNumberInput"] input:active {
+            background-color: #211827 !important;
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
         [data-testid="stAppViewContainer"] .main {
             color: #111827;
         }

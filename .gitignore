@@ -5,3 +5,5 @@ database.py
 loja.db
 database.py
 .venv
+/backups/
+/popular_dados_demo.py
